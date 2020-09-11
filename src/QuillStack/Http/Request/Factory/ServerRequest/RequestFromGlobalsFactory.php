@@ -20,9 +20,6 @@ class RequestFromGlobalsFactory
     private const SERVER_HTTPS = 'HTTPS';
     private const HEADER_PREFIX = 'HTTP_';
 
-    /**
-     * @var array
-     */
     private const REQUIRED_SERVER_PARAMS = [
         self::SERVER_REQUEST_METHOD,
         self::SERVER_HTTP_HOST,

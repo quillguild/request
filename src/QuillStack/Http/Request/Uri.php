@@ -35,7 +35,7 @@ final class Uri implements UriInterface
     private int $port;
     private string $query;
     private string $path;
-    private $fragment = '';
+    private string $fragment = '';
 
     /**
      * Uri constructor.
@@ -106,21 +106,33 @@ final class Uri implements UriInterface
         return $this->port;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getPath()
     {
         return $this->path;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getQuery()
     {
         return $this->query;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getFragment()
     {
         return $this->fragment;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function withScheme($scheme)
     {
         $new = clone $this;
@@ -129,6 +141,9 @@ final class Uri implements UriInterface
         return $new;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function withUserInfo($user, $password = null)
     {
         $new = clone $this;
@@ -137,6 +152,9 @@ final class Uri implements UriInterface
         return $new;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function withHost($host)
     {
         $new = clone $this;
@@ -145,6 +163,9 @@ final class Uri implements UriInterface
         return $new;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function withPort($port)
     {
         $new = clone $this;
@@ -153,6 +174,9 @@ final class Uri implements UriInterface
         return $new;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function withPath($path)
     {
         $new = clone $this;
@@ -161,6 +185,9 @@ final class Uri implements UriInterface
         return $new;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function withQuery($query)
     {
         $new = clone $this;
@@ -169,6 +196,9 @@ final class Uri implements UriInterface
         return $new;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function withFragment($fragment)
     {
         $new = clone $this;
@@ -177,6 +207,9 @@ final class Uri implements UriInterface
         return $new;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function __toString()
     {
         $uri = "{$this->scheme}://";

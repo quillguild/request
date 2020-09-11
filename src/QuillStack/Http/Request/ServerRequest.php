@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
+use QuillStack\Http\Request\Exceptions\MethodNotImplementedException;
 use QuillStack\Http\Request\Factory\Exceptions\RequestMethodNotKnownException;
 
 class ServerRequest implements ServerRequestInterface
@@ -108,9 +109,11 @@ class ServerRequest implements ServerRequestInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @param $name
+     *
+     * @return int
      */
-    private function getHeaderIndex($name)
+    private function getHeaderIndex($name): int
     {
         return array_search(strtolower($name), $this->headersKeys);
     }
@@ -127,7 +130,7 @@ class ServerRequest implements ServerRequestInterface
         $index = $this->getHeaderIndex($name);
 
         return [
-            $name => array_values($this->headers)[$index]
+            $name => array_values($this->headers)[$index],
         ];
     }
 
@@ -232,14 +235,20 @@ class ServerRequest implements ServerRequestInterface
         return $new;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getRequestTarget()
     {
-        // TODO: Implement getRequestTarget() method.
+        throw new MethodNotImplementedException('Method `getRequestTarget` not implemented');
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function withRequestTarget($requestTarget)
     {
-        // TODO: Implement withRequestTarget() method.
+        throw new MethodNotImplementedException('Method `withRequestTarget` not implemented');
     }
 
     /**
@@ -302,9 +311,15 @@ class ServerRequest implements ServerRequestInterface
         $this->cookieParams;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function withCookieParams(array $cookies)
     {
-        // TODO: Implement withCookieParams() method.
+        $new = clone $this;
+        $new->cookieParams = $cookies;
+
+        return $new;
     }
 
     /**
@@ -315,9 +330,15 @@ class ServerRequest implements ServerRequestInterface
         $this->queryParams;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function withQueryParams(array $query)
     {
-        // TODO: Implement withQueryParams() method.
+        $new = clone $this;
+        $new->queryParams = $query;
+
+        return $new;
     }
 
     /**
@@ -328,9 +349,15 @@ class ServerRequest implements ServerRequestInterface
         $this->uploadedFiles;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function withUploadedFiles(array $uploadedFiles)
     {
-        // TODO: Implement withUploadedFiles() method.
+        $new = clone $this;
+        $new->uploadedFiles = $uploadedFiles;
+
+        return $new;
     }
 
     /**
@@ -341,9 +368,15 @@ class ServerRequest implements ServerRequestInterface
         return $this->parsedBody;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function withParsedBody($data)
     {
-        // TODO: Implement withParsedBody() method.
+        $new = clone $this;
+        $new->parsedBody = $data;
+
+        return $new;
     }
 
     /**
@@ -366,13 +399,19 @@ class ServerRequest implements ServerRequestInterface
         return $this->attributes[$name];
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function withAttribute($name, $value)
     {
-        // TODO: Implement withAttribute() method.
+        throw new MethodNotImplementedException('Method `withAttribute` not implemented');
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function withoutAttribute($name)
     {
-        // TODO: Implement withoutAttribute() method.
+        throw new MethodNotImplementedException('Method `withoutAttribute` not implemented');
     }
 }

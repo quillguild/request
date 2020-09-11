@@ -12,7 +12,7 @@ use QuillStack\Http\Request\ServerRequest;
 
 class ServerRequestFactory implements ServerRequestFactoryInterface
 {
-    const REQUIRED_SERVER_PARAMS = [
+    private const REQUIRED_SERVER_PARAMS = [
         'protocolVersion',
         'headers',
         'serverParams',

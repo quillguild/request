@@ -31,9 +31,9 @@ class UriFactory implements UriFactoryInterface
         $userInfoHostPort = $this->getUserInfoHostPort($slashArray);
         $scheme = $this->getScheme($colonArray);
 
-        list ($userInfo, $authority) = $this->getUserInfoAndAuthority($userInfoHostPort);
-        list ($host, $port) = $this->getHostAndPort($userInfoHostPort, $scheme);
-        list ($path, $query) = $this->getPathAndQuery($slashArray);
+        list($userInfo, $authority) = $this->getUserInfoAndAuthority($userInfoHostPort);
+        list($host, $port) = $this->getHostAndPort($userInfoHostPort, $scheme);
+        list($path, $query) = $this->getPathAndQuery($slashArray);
 
         return new Uri($scheme, $authority, $userInfo, $host, $port, $query, $path);
     }

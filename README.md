@@ -1,5 +1,8 @@
 # QuillStack Request
 
+[![StyleCI](https://github.styleci.io/repos/291464420/shield?branch=master)](https://github.styleci.io/repos/291464420?branch=master)
+[![CodeFactor](https://www.codefactor.io/repository/github/quillstack/request/badge)](https://www.codefactor.io/repository/github/quillstack/request)
+
 QuillStack Request is the request library which implements
 _PSR-7: HTTP message interfaces_ and is based on
 _PSR-17: HTTP Factories_.

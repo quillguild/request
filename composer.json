@@ -3,7 +3,7 @@
     "description": "The request object based on PSR-7: HTTP messages, and with the main goal: to be simple and fast.",
     "type": "library",
     "license": "MIT",
-    "homepage": "https://quillhttp.com",
+    "homepage": "https://quillstack.com/request/",
     "authors": [
         {
             "name": "Radek Ziemniewicz",

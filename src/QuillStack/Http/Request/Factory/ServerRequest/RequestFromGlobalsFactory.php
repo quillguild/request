@@ -36,19 +36,7 @@ class RequestFromGlobalsFactory
     /**
      * @var UriFactory
      */
-    private UriFactory $uriFactory;
-
-    /**
-     * RequestFromGlobalsFactory constructor.
-     *
-     * @param ServerRequestFactory $serverRequestFactory
-     * @param UriFactory $uriFactory
-     */
-    public function __construct(ServerRequestFactory $serverRequestFactory, UriFactory $uriFactory)
-    {
-        $this->serverRequestFactory = $serverRequestFactory;
-        $this->uriFactory = $uriFactory;
-    }
+    public UriFactory $uriFactory;
 
     /**
      * @return ServerRequestInterface

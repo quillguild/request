@@ -14,7 +14,8 @@
         "php": "^7.4",
         "psr/http-message": "^1.0",
         "psr/http-factory": "^1.0",
-        "quillstack/di": "^1.0"
+        "quillstack/di": "^1.0",
+        "quillstack/header-bag": "^1.0"
     },
     "autoload": {
         "psr-4": {

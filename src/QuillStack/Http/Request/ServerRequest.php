@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
+use QuillStack\Http\HeaderBag\HeaderBag;
 use QuillStack\Http\Request\Exceptions\MethodNotImplementedException;
 use QuillStack\Http\Request\Factory\Exceptions\RequestMethodNotKnownException;
 
@@ -24,8 +25,7 @@ class ServerRequest implements ServerRequestInterface
     private string $method;
     private UriInterface $uri;
     private string $protocolVersion;
-    private array $headers;
-    private array $headersKeys;
+    private HeaderBag $headerBag;
     private ?StreamInterface $body;
     private array $serverParams;
     private array $cookieParams;
@@ -40,7 +40,7 @@ class ServerRequest implements ServerRequestInterface
      * @param string $method
      * @param UriInterface $uri
      * @param string $protocolVersion
-     * @param array $headers
+     * @param HeaderBag $headerBag
      * @param StreamInterface|null $body
      * @param array $serverParams
      * @param array $cookieParams
@@ -52,7 +52,7 @@ class ServerRequest implements ServerRequestInterface
         string $method,
         UriInterface $uri,
         string $protocolVersion,
-        array $headers,
+        HeaderBag $headerBag,
         StreamInterface $body = null,
         array $serverParams = [],
         array $cookieParams = [],
@@ -63,8 +63,7 @@ class ServerRequest implements ServerRequestInterface
         $this->method = $method;
         $this->uri = $uri;
         $this->protocolVersion = $protocolVersion;
-        $this->headers = $headers;
-        $this->headersKeys = array_map('strtolower', array_keys($this->headers));
+        $this->headerBag = $headerBag;
         $this->body = $body;
         $this->serverParams = $serverParams;
         $this->cookieParams = $cookieParams;
@@ -97,7 +96,7 @@ class ServerRequest implements ServerRequestInterface
      */
     public function getHeaders()
     {
-        $this->headers;
+        return $this->headerBag->getHeaders();
     }
 
     /**
@@ -105,17 +104,7 @@ class ServerRequest implements ServerRequestInterface
      */
     public function hasHeader($name)
     {
-        return in_array(strtolower($name), $this->headersKeys);
-    }
-
-    /**
-     * @param $name
-     *
-     * @return int
-     */
-    private function getHeaderIndex($name): int
-    {
-        return array_search(strtolower($name), $this->headersKeys);
+        return $this->headerBag->hasHeader($name);
     }
 
     /**
@@ -123,15 +112,7 @@ class ServerRequest implements ServerRequestInterface
      */
     public function getHeader($name)
     {
-        if (!$this->hasHeader($name)) {
-            return [];
-        }
-
-        $index = $this->getHeaderIndex($name);
-
-        return [
-            $name => array_values($this->headers)[$index],
-        ];
+        return $this->headerBag->getHeader($name);
     }
 
     /**
@@ -139,13 +120,7 @@ class ServerRequest implements ServerRequestInterface
      */
     public function getHeaderLine($name)
     {
-        $header = $this->getHeader($name);
-
-        if ($header === []) {
-            return '';
-        }
-
-        return current($header);
+        return $this->headerBag->getHeaderLine($name);
     }
 
     /**
@@ -153,23 +128,7 @@ class ServerRequest implements ServerRequestInterface
      */
     public function withHeader($name, $value)
     {
-        if (!is_string($name)) {
-            throw new InvalidArgumentException('Header name is not string');
-        }
-
-        if (!is_string($value) && !is_array($value)) {
-            throw new InvalidArgumentException('Header value is not string or array');
-        }
-
-        $new = clone $this;
-        $new->headers[$name] = $value;
-        $keyName = strtolower($name);
-
-        if (!in_array($keyName, $new->headersKeys)) {
-            $new->headersKeys[] = $keyName;
-        }
-
-        return $new;
+        return $this->headerBag->withHeader($name, $value);
     }
 
     /**
@@ -177,23 +136,7 @@ class ServerRequest implements ServerRequestInterface
      */
     public function withAddedHeader($name, $value)
     {
-        $new = clone $this;
-
-        if ($this->hasHeader($name)) {
-            return $new;
-        }
-
-        return $new->withHeader($name, $value);
-    }
-
-    /**
-     * @param int $index
-     *
-     * @return string
-     */
-    private function getHeaderKeyByIndex(int $index): string
-    {
-        return array_keys($this->headers)[$index];
+        return $this->headerBag->withAddedHeader($name, $value);
     }
 
     /**
@@ -201,19 +144,7 @@ class ServerRequest implements ServerRequestInterface
      */
     public function withoutHeader($name)
     {
-        $new = clone $this;
-
-        if (!$this->hasHeader($name)) {
-            return $new;
-        }
-
-        $index = $this->getHeaderIndex($name);
-        $key = $this->getHeaderKeyByIndex($index);
-
-        unset($new->headersKeys[$index]);
-        unset($new->headers[$key]);
-
-        return $new;
+        return $this->headerBag->withoutHeader($name);
     }
 
     /**

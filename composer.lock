@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7cad2423e2018db31897d0f7277e5d78",
+    "content-hash": "e3e63403e1646e4c7a93352821c21d11",
     "packages": [
         {
             "name": "psr/container",
@@ -199,6 +199,49 @@
             "description": "The dependency injection container based on PSR-11: Container interface, and with the main goal: to be fast.",
             "homepage": "https://quilldi.com",
             "time": "2020-09-05T16:36:04+00:00"
+        },
+        {
+            "name": "quillstack/header-bag",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/quillstack/header-bag.git",
+                "reference": "2f08ff8a6c1abeebd9a795d1935bd2fd5b55d08d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/quillstack/header-bag/zipball/2f08ff8a6c1abeebd9a795d1935bd2fd5b55d08d",
+                "reference": "2f08ff8a6c1abeebd9a795d1935bd2fd5b55d08d",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4",
+                "psr/http-message": "^1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9",
+                "symfony/var-dumper": "^5.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "QuillStack\\Http\\HeaderBag\\": "src/QuillStack/Http/HeaderBag/",
+                    "QuillStack\\Mocks\\HeaderBag\\": "tests/QuillStack/Mocks/HeaderBag/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Radek Ziemniewicz",
+                    "email": "open-source@quillstack.com"
+                }
+            ],
+            "description": "A simple solution to use headers according to PSR-7.",
+            "homepage": "https://quillstack.com/headers/",
+            "time": "2020-09-29T20:30:06+00:00"
         }
     ],
     "packages-dev": [

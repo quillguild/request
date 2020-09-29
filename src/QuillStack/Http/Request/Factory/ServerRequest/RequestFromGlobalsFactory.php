@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace QuillStack\Http\Request\Factory\ServerRequest;
 
 use Psr\Http\Message\ServerRequestInterface;
+use QuillStack\Http\HeaderBag\HeaderBag;
 use QuillStack\Http\Request\Factory\Exceptions\RequestMethodNotKnownException;
 use QuillStack\Http\Request\Factory\Exceptions\RequiredParamFromGlobalsNotFoundException;
 use QuillStack\Http\Request\Factory\Uri\UriFactory;
@@ -115,9 +116,9 @@ class RequestFromGlobalsFactory
     }
 
     /**
-     * @return array
+     * @return HeaderBag
      */
-    private function getHeaders(): array
+    private function getHeaders(): HeaderBag
     {
         $headers = [];
 
@@ -132,7 +133,7 @@ class RequestFromGlobalsFactory
             $headers[$name] = $value;
         }
 
-        return $headers;
+        return new HeaderBag($headers);
     }
 
     /**

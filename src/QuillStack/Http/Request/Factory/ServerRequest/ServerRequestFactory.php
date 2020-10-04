@@ -6,11 +6,11 @@ namespace QuillStack\Http\Request\Factory\ServerRequest;
 
 use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use QuillStack\Http\Request\Factory\Exceptions\ServerParamNotSetException;
+use Psr\Http\Message\StreamInterface;
 use QuillStack\Http\Request\Factory\Exceptions\UnknownServerRequestClassException;
 use QuillStack\Http\Request\ServerRequest;
-use QuillStack\Http\Request\InputStream;
 use QuillStack\Http\Request\Validators\ServerParamValidator;
+use QuillStack\Http\Stream\InputStream;
 
 class ServerRequestFactory implements ServerRequestFactoryInterface
 {
@@ -18,6 +18,11 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
      * @var string
      */
     private string $requestClass = ServerRequest::class;
+
+    /**
+     * @var StreamInterface
+     */
+    public StreamInterface $stream;
 
     /**
      * @var ServerParamValidator
@@ -48,7 +53,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
             $uri,
             $serverParams['protocolVersion'],
             $serverParams['headers'],
-            new InputStream(),
+            $this->stream,
             $serverParams['serverParams'],
             $serverParams['cookieParams'],
             $serverParams['queryParams'],

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace QuillStack\Http\Request\Factory\ServerRequest;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UriFactoryInterface;
 use QuillStack\Http\HeaderBag\HeaderBag;
 use QuillStack\Http\Request\Factory\Exceptions\RequestMethodNotKnownException;
-use QuillStack\Http\Request\Factory\Uri\UriFactory;
 use QuillStack\Http\Request\ServerRequest;
-use QuillStack\Http\Request\Uri;
 use QuillStack\Http\Request\Validators\ServerGlobalArrayValidator;
+use QuillStack\Http\Uri\Uri;
 use QuillStack\ParameterBag\ParameterBag;
 
 class RequestFromGlobalsFactory
@@ -51,9 +51,9 @@ class RequestFromGlobalsFactory
     public ServerRequestFactory $serverRequestFactory;
 
     /**
-     * @var UriFactory
+     * @var UriFactoryInterface
      */
-    public UriFactory $uriFactory;
+    public UriFactoryInterface $uriFactory;
 
     /**
      * @var ServerGlobalArrayValidator

@@ -7,27 +7,43 @@ namespace QuillStack\Http\Request\Factory\ServerRequest;
 use Psr\Http\Message\ServerRequestInterface;
 use QuillStack\Http\HeaderBag\HeaderBag;
 use QuillStack\Http\Request\Factory\Exceptions\RequestMethodNotKnownException;
-use QuillStack\Http\Request\Factory\Exceptions\RequiredParamFromGlobalsNotFoundException;
 use QuillStack\Http\Request\Factory\Uri\UriFactory;
 use QuillStack\Http\Request\ServerRequest;
 use QuillStack\Http\Request\Uri;
+use QuillStack\Http\Request\Validators\ServerGlobalArrayValidator;
 use QuillStack\ParameterBag\ParameterBag;
 
 class RequestFromGlobalsFactory
 {
-    private const SERVER_REQUEST_METHOD = 'REQUEST_METHOD';
-    private const SERVER_HTTP_HOST = 'HTTP_HOST';
-    private const SERVER_REQUEST_URI = 'REQUEST_URI';
-    private const SERVER_SERVER_PROTOCOL = 'SERVER_PROTOCOL';
-    private const SERVER_HTTPS = 'HTTPS';
-    private const HEADER_PREFIX = 'HTTP_';
+    /**
+     * @var string
+     */
+    public const SERVER_REQUEST_METHOD = 'REQUEST_METHOD';
 
-    private const REQUIRED_SERVER_PARAMS = [
-        self::SERVER_REQUEST_METHOD,
-        self::SERVER_HTTP_HOST,
-        self::SERVER_REQUEST_URI,
-        self::SERVER_SERVER_PROTOCOL,
-    ];
+    /**
+     * @var string
+     */
+    public const SERVER_HTTP_HOST = 'HTTP_HOST';
+
+    /**
+     * @var string
+     */
+    public const SERVER_REQUEST_URI = 'REQUEST_URI';
+
+    /**
+     * @var string
+     */
+    public const SERVER_SERVER_PROTOCOL = 'SERVER_PROTOCOL';
+
+    /**
+     * @var string
+     */
+    private const SERVER_HTTPS = 'HTTPS';
+
+    /**
+     * @var string
+     */
+    private const HEADER_PREFIX = 'HTTP_';
 
     /**
      * @var ServerRequestFactory
@@ -40,16 +56,54 @@ class RequestFromGlobalsFactory
     public UriFactory $uriFactory;
 
     /**
+     * @var ServerGlobalArrayValidator
+     */
+    public ServerGlobalArrayValidator $validator;
+
+    /**
      * @var array
      */
-    private array $server = [];
+    private array $server;
+
+    /**
+     * @var array
+     */
+    private array $cookie;
+
+    /**
+     * @var array
+     */
+    private array $query;
+
+    /**
+     * @var array
+     */
+    private array $files;
+
+    /**
+     * @var array
+     */
+    private array $post;
 
     /**
      * @param array $server
+     * @param array $cookie
+     * @param array $query
+     * @param array $files
+     * @param array $post
      */
-    public function __construct(array $server = [])
-    {
+    public function __construct(
+        array $server = [],
+        array $cookie = [],
+        array $query = [],
+        array $files = [],
+        array $post = []
+    ) {
         $this->server = !empty($server) ? $server : $_SERVER;
+        $this->cookie = !empty($cookie) ? $cookie : $_COOKIE;
+        $this->query = !empty($query) ? $query : $_GET;
+        $this->files = !empty($files) ? $files : $_FILES;
+        $this->post = !empty($post) ? $post : $_POST;
     }
 
     /**
@@ -57,12 +111,10 @@ class RequestFromGlobalsFactory
      */
     public function createServerRequest(): ServerRequestInterface
     {
-        foreach (self::REQUIRED_SERVER_PARAMS as $requiredServerParam) {
-            if (!isset($this->server[$requiredServerParam])) {
-                throw new RequiredParamFromGlobalsNotFoundException("Not found: \$_SERVER['{$requiredServerParam}']");
-            }
-        }
+        // Validate.
+        $this->validator->setServer($this->server)->validate();
 
+        // Set method, server params, and URI.
         $method = $this->getMethod();
         $serverParams = $this->getServerParams();
         $uri = $this->uriFactory->createUri(
@@ -110,10 +162,10 @@ class RequestFromGlobalsFactory
             'protocolVersion' => $this->getServerVersion(),
             'headers' => $this->getHeaders(),
             'serverParams' => new ParameterBag($this->server),
-            'cookieParams' => new ParameterBag($_COOKIE),
-            'queryParams' => new ParameterBag($_GET),
-            'uploadedFiles' => new ParameterBag($_FILES),
-            'parsedBody' => new ParameterBag($_POST),
+            'cookieParams' => new ParameterBag($this->cookie),
+            'queryParams' => new ParameterBag($this->query),
+            'uploadedFiles' => new ParameterBag($this->files),
+            'parsedBody' => new ParameterBag($this->post),
         ];
     }
 

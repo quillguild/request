@@ -298,7 +298,7 @@ class ServerRequest implements ServerRequestInterface
      */
     public function getCookieParams()
     {
-        $this->cookieParams->all();
+        return $this->cookieParams->all();
     }
 
     /**
@@ -307,7 +307,7 @@ class ServerRequest implements ServerRequestInterface
     public function withCookieParams(array $cookies)
     {
         $new = clone $this;
-        $new->cookieParams = $cookies;
+        $new->cookieParams = new ParameterBag($cookies);
 
         return $new;
     }
@@ -317,7 +317,7 @@ class ServerRequest implements ServerRequestInterface
      */
     public function getQueryParams()
     {
-        $this->queryParams->all();
+        return $this->queryParams->all();
     }
 
     /**
@@ -326,7 +326,7 @@ class ServerRequest implements ServerRequestInterface
     public function withQueryParams(array $query)
     {
         $new = clone $this;
-        $new->queryParams = $query;
+        $new->queryParams = new ParameterBag($query);
 
         return $new;
     }
@@ -336,7 +336,7 @@ class ServerRequest implements ServerRequestInterface
      */
     public function getUploadedFiles()
     {
-        $this->uploadedFiles->all();
+        return $this->uploadedFiles->all();
     }
 
     /**
@@ -345,7 +345,7 @@ class ServerRequest implements ServerRequestInterface
     public function withUploadedFiles(array $uploadedFiles)
     {
         $new = clone $this;
-        $new->uploadedFiles = $uploadedFiles;
+        $new->uploadedFiles = new ParameterBag($uploadedFiles);
 
         return $new;
     }
@@ -364,7 +364,7 @@ class ServerRequest implements ServerRequestInterface
     public function withParsedBody($data)
     {
         $new = clone $this;
-        $new->parsedBody = $data;
+        $new->parsedBody = new ParameterBag($data);
 
         return $new;
     }

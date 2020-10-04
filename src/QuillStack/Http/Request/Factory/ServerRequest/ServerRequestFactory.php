@@ -10,7 +10,6 @@ use Psr\Http\Message\StreamInterface;
 use QuillStack\Http\Request\Factory\Exceptions\UnknownServerRequestClassException;
 use QuillStack\Http\Request\ServerRequest;
 use QuillStack\Http\Request\Validators\ServerParamValidator;
-use QuillStack\Http\Stream\InputStream;
 
 class ServerRequestFactory implements ServerRequestFactoryInterface
 {

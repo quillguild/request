@@ -8,5 +8,4 @@ use RuntimeException;
 
 final class ServerParamNotSetException extends RuntimeException
 {
-    //
 }

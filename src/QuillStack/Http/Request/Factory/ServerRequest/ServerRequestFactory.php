@@ -9,6 +9,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use QuillStack\Http\Request\Factory\Exceptions\ServerParamNotSetException;
 use QuillStack\Http\Request\Factory\Exceptions\UnknownServerRequestClassException;
 use QuillStack\Http\Request\ServerRequest;
+use QuillStack\Http\Request\InputStream;
 
 class ServerRequestFactory implements ServerRequestFactoryInterface
 {
@@ -49,7 +50,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
             $uri,
             $serverParams['protocolVersion'],
             $serverParams['headers'],
-            null,
+            new InputStream(),
             $serverParams['serverParams'],
             $serverParams['cookieParams'],
             $serverParams['queryParams'],

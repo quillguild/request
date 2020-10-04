@@ -10,21 +10,23 @@ use QuillStack\Http\Request\Factory\Exceptions\ServerParamNotSetException;
 use QuillStack\Http\Request\Factory\Exceptions\UnknownServerRequestClassException;
 use QuillStack\Http\Request\ServerRequest;
 use QuillStack\Http\Request\InputStream;
+use QuillStack\Http\Request\Validators\ServerParamValidator;
 
 class ServerRequestFactory implements ServerRequestFactoryInterface
 {
-    private const REQUIRED_SERVER_PARAMS = [
-        'protocolVersion',
-        'headers',
-        'serverParams',
-        'cookieParams',
-        'queryParams',
-        'uploadedFiles',
-        'parsedBody',
-    ];
-
+    /**
+     * @var string
+     */
     private string $requestClass = ServerRequest::class;
 
+    /**
+     * @var ServerParamValidator
+     */
+    public ServerParamValidator $validator;
+
+    /**
+     * @param string $requestClass
+     */
     public function setRequestClass(string $requestClass)
     {
         if (!class_exists($requestClass)) {
@@ -39,11 +41,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
      */
     public function createServerRequest(string $method, $uri, array $serverParams = []): ServerRequestInterface
     {
-        foreach (self::REQUIRED_SERVER_PARAMS as $requiredServerParam) {
-            if (!isset($serverParams[$requiredServerParam])) {
-                throw new ServerParamNotSetException("Server param not set: {$requiredServerParam}");
-            }
-        }
+        $this->validator->setServerParams($serverParams)->validate();
 
         return new $this->requestClass(
             $method,

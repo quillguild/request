@@ -13,9 +13,12 @@ final class InputStream implements StreamInterface
      */
     private ?string $body;
 
-    public function __construct()
+    /**
+     * @param null $contest
+     */
+    public function __construct($contest = null)
     {
-        $body = file_get_contents('php://input');
+        $body = $contest ?? file_get_contents('php://input');
         $this->body = !empty($body) ? $body : null;
     }
 

@@ -23,6 +23,9 @@ class UriFactory implements UriFactoryInterface
         Uri::SCHEME_HTTP => 80,
     ];
 
+    /**
+     * {@inheritDoc}
+     */
     public function createUri(string $uri = ''): UriInterface
     {
         $slashArray = $this->getSlashArray($uri);
@@ -31,9 +34,9 @@ class UriFactory implements UriFactoryInterface
         $userInfoHostPort = $this->getUserInfoHostPort($slashArray);
         $scheme = $this->getScheme($colonArray);
 
-        list($userInfo, $authority) = $this->getUserInfoAndAuthority($userInfoHostPort);
-        list($host, $port) = $this->getHostAndPort($userInfoHostPort, $scheme);
-        list($path, $query) = $this->getPathAndQuery($slashArray);
+        [$userInfo, $authority] = $this->getUserInfoAndAuthority($userInfoHostPort);
+        [$host, $port] = $this->getHostAndPort($userInfoHostPort, $scheme);
+        [$path, $query] = $this->getPathAndQuery($slashArray);
 
         return new Uri($scheme, $authority, $userInfo, $host, $port, $query, $path);
     }

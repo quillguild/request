@@ -6,6 +6,8 @@
 QuillStack Request is the request library which implements
 _PSR-7: HTTP message interfaces_ and is based on
 _PSR-17: HTTP Factories_.
+You can find the full documentation on the website: \
+https://quillstack.com/request
 
 ### Unit tests
 

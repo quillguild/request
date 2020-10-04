@@ -14,13 +14,14 @@
         "php": "^7.4",
         "psr/http-message": "^1.0",
         "psr/http-factory": "^1.0",
-        "quillstack/di": "^1.3",
-        "quillstack/header-bag": "^1.0"
+        "quillstack/di": "^1.4.0",
+        "quillstack/header-bag": "^1.0",
+        "quillstack/parameter-bag": "^1.0"
     },
     "autoload": {
         "psr-4": {
             "QuillStack\\Http\\Request\\": "src/QuillStack/Http/Request/",
-            "QuillStack\\Mocks\\Http\\Request\\": "tests/QuillStack/Mocks/Http/Request/"
+            "QuillStack\\Mocks\\": "tests/QuillStack/Mocks/"
         }
     },
     "require-dev": {

@@ -11,42 +11,94 @@ use Psr\Http\Message\UriInterface;
 use QuillStack\Http\HeaderBag\HeaderBag;
 use QuillStack\Http\Request\Exceptions\MethodNotImplementedException;
 use QuillStack\Http\Request\Factory\Exceptions\RequestMethodNotKnownException;
+use QuillStack\ParameterBag\ParameterBag;
 
 class ServerRequest implements ServerRequestInterface
 {
+    /**
+     * @var string
+     */
     public const METHOD_GET = 'GET';
+
+    /**
+     * @var string
+     */
     public const METHOD_POST = 'POST';
 
+    /**
+     * @var array
+     */
     public const AVAILABLE_METHODS = [
         self::METHOD_GET,
         self::METHOD_POST,
     ];
 
+    /**
+     * @var string
+     */
     private string $method;
+
+    /**
+     * @var UriInterface
+     */
     private UriInterface $uri;
+
+    /**
+     * @var string
+     */
     private string $protocolVersion;
+
+    /**
+     * @var HeaderBag
+     */
     private HeaderBag $headerBag;
+
+    /**
+     * @var StreamInterface|null
+     */
     private ?StreamInterface $body;
-    private array $serverParams;
-    private array $cookieParams;
-    private array $queryParams;
-    private array $uploadedFiles;
-    private array $parsedBody;
+
+    /**
+     * @var ParameterBag|null
+     */
+    private ?ParameterBag $serverParams;
+
+    /**
+     * @var ParameterBag|null
+     */
+    private ?ParameterBag $cookieParams;
+
+    /**
+     * @var ParameterBag|null
+     */
+    private ?ParameterBag $queryParams;
+
+    /**
+     * @var ParameterBag|null
+     */
+    private ?ParameterBag $uploadedFiles;
+
+    /**
+     * @var ParameterBag|null
+     */
+    private ?ParameterBag $parsedBody;
+
+    /**
+     * @var array
+     */
     private array $attributes = [];
 
     /**
-     * ServerRequest constructor.
-     *
      * @param string $method
      * @param UriInterface $uri
      * @param string $protocolVersion
      * @param HeaderBag $headerBag
      * @param StreamInterface|null $body
-     * @param array $serverParams
-     * @param array $cookieParams
-     * @param array $queryParams
-     * @param array $uploadedFiles
-     * @param array $parsedBody
+     * @param ParameterBag|null $serverParams
+     * @param ParameterBag|null $cookieParams
+     * @param ParameterBag|null $queryParams
+     * @param ParameterBag|null $uploadedFiles
+     * @param ParameterBag|null $parsedBody
      */
     public function __construct(
         string $method,
@@ -54,11 +106,11 @@ class ServerRequest implements ServerRequestInterface
         string $protocolVersion,
         HeaderBag $headerBag,
         StreamInterface $body = null,
-        array $serverParams = [],
-        array $cookieParams = [],
-        array $queryParams = [],
-        array $uploadedFiles = [],
-        array $parsedBody = []
+        ParameterBag $serverParams = null,
+        ParameterBag $cookieParams = null,
+        ParameterBag $queryParams = null,
+        ParameterBag $uploadedFiles = null,
+        ParameterBag $parsedBody = null
     ) {
         $this->method = $method;
         $this->uri = $uri;
@@ -93,6 +145,7 @@ class ServerRequest implements ServerRequestInterface
 
     /**
      * {@inheritDoc}
+     * @codeCoverageIgnore
      */
     public function getHeaders()
     {
@@ -101,6 +154,7 @@ class ServerRequest implements ServerRequestInterface
 
     /**
      * {@inheritDoc}
+     * @codeCoverageIgnore
      */
     public function hasHeader($name)
     {
@@ -109,6 +163,7 @@ class ServerRequest implements ServerRequestInterface
 
     /**
      * {@inheritDoc}
+     * @codeCoverageIgnore
      */
     public function getHeader($name)
     {
@@ -117,6 +172,7 @@ class ServerRequest implements ServerRequestInterface
 
     /**
      * {@inheritDoc}
+     * @codeCoverageIgnore
      */
     public function getHeaderLine($name)
     {
@@ -125,6 +181,7 @@ class ServerRequest implements ServerRequestInterface
 
     /**
      * {@inheritDoc}
+     * @codeCoverageIgnore
      */
     public function withHeader($name, $value)
     {
@@ -133,6 +190,7 @@ class ServerRequest implements ServerRequestInterface
 
     /**
      * {@inheritDoc}
+     * @codeCoverageIgnore
      */
     public function withAddedHeader($name, $value)
     {
@@ -141,6 +199,7 @@ class ServerRequest implements ServerRequestInterface
 
     /**
      * {@inheritDoc}
+     * @codeCoverageIgnore
      */
     public function withoutHeader($name)
     {
@@ -231,7 +290,7 @@ class ServerRequest implements ServerRequestInterface
      */
     public function getServerParams()
     {
-        return $this->serverParams;
+        return $this->serverParams->all();
     }
 
     /**
@@ -239,7 +298,7 @@ class ServerRequest implements ServerRequestInterface
      */
     public function getCookieParams()
     {
-        $this->cookieParams;
+        $this->cookieParams->all();
     }
 
     /**
@@ -258,7 +317,7 @@ class ServerRequest implements ServerRequestInterface
      */
     public function getQueryParams()
     {
-        $this->queryParams;
+        $this->queryParams->all();
     }
 
     /**
@@ -277,7 +336,7 @@ class ServerRequest implements ServerRequestInterface
      */
     public function getUploadedFiles()
     {
-        $this->uploadedFiles;
+        $this->uploadedFiles->all();
     }
 
     /**
@@ -296,7 +355,7 @@ class ServerRequest implements ServerRequestInterface
      */
     public function getParsedBody()
     {
-        return $this->parsedBody;
+        return $this->parsedBody->all();
     }
 
     /**

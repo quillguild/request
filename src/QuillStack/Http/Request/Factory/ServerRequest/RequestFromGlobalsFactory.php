@@ -11,6 +11,7 @@ use QuillStack\Http\Request\Factory\Exceptions\RequiredParamFromGlobalsNotFoundE
 use QuillStack\Http\Request\Factory\Uri\UriFactory;
 use QuillStack\Http\Request\ServerRequest;
 use QuillStack\Http\Request\Uri;
+use QuillStack\ParameterBag\ParameterBag;
 
 class RequestFromGlobalsFactory
 {
@@ -39,12 +40,25 @@ class RequestFromGlobalsFactory
     public UriFactory $uriFactory;
 
     /**
+     * @var array
+     */
+    private array $server = [];
+
+    /**
+     * @param array $server
+     */
+    public function __construct(array $server = [])
+    {
+        $this->server = !empty($server) ? $server : $_SERVER;
+    }
+
+    /**
      * @return ServerRequestInterface
      */
     public function createServerRequest(): ServerRequestInterface
     {
         foreach (self::REQUIRED_SERVER_PARAMS as $requiredServerParam) {
-            if (!isset($_SERVER[$requiredServerParam])) {
+            if (!isset($this->server[$requiredServerParam])) {
                 throw new RequiredParamFromGlobalsNotFoundException("Not found: \$_SERVER['{$requiredServerParam}']");
             }
         }
@@ -63,7 +77,7 @@ class RequestFromGlobalsFactory
      */
     private function getMethod(): string
     {
-        $method = strtoupper($_SERVER[self::SERVER_REQUEST_METHOD]);
+        $method = strtoupper($this->server[self::SERVER_REQUEST_METHOD]);
 
         if (!in_array($method, ServerRequest::AVAILABLE_METHODS, true)) {
             throw new RequestMethodNotKnownException("Method not known: {$method}");
@@ -77,12 +91,12 @@ class RequestFromGlobalsFactory
      */
     private function getUriString(): string
     {
-        $scheme = isset($_SERVER[self::SERVER_HTTPS]) && $_SERVER[self::SERVER_HTTPS] === 'on'
+        $scheme = isset($this->server[self::SERVER_HTTPS]) && $this->server[self::SERVER_HTTPS] === 'on'
             ? Uri::SCHEME_HTTPS
             : Uri::SCHEME_HTTP;
 
-        $host = $_SERVER[self::SERVER_HTTP_HOST];
-        $requestUri = $_SERVER[self::SERVER_REQUEST_URI];
+        $host = $this->server[self::SERVER_HTTP_HOST];
+        $requestUri = $this->server[self::SERVER_REQUEST_URI];
 
         return "{$scheme}://{$host}{$requestUri}";
     }
@@ -95,11 +109,11 @@ class RequestFromGlobalsFactory
         return [
             'protocolVersion' => $this->getServerVersion(),
             'headers' => $this->getHeaders(),
-            'serverParams' => $_SERVER,
-            'cookieParams' => $_COOKIE,
-            'queryParams' => $_GET,
-            'uploadedFiles' => $_FILES,
-            'parsedBody' => $_POST,
+            'serverParams' => new ParameterBag($this->server),
+            'cookieParams' => new ParameterBag($_COOKIE),
+            'queryParams' => new ParameterBag($_GET),
+            'uploadedFiles' => new ParameterBag($_FILES),
+            'parsedBody' => new ParameterBag($_POST),
         ];
     }
 
@@ -110,7 +124,7 @@ class RequestFromGlobalsFactory
     {
         $headers = [];
 
-        foreach ($_SERVER as $key => $value) {
+        foreach ($this->server as $key => $value) {
             if (substr($key, 0, 5) !== self::HEADER_PREFIX) {
                 continue;
             }
@@ -129,6 +143,6 @@ class RequestFromGlobalsFactory
      */
     private function getServerVersion(): string
     {
-        return str_replace('HTTP/', '', $_SERVER['SERVER_PROTOCOL']);
+        return str_replace('HTTP/', '', $this->server['SERVER_PROTOCOL']);
     }
 }

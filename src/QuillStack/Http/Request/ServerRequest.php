@@ -89,6 +89,11 @@ class ServerRequest implements ServerRequestInterface
     private array $attributes = [];
 
     /**
+     * @var string|null
+     */
+    public ?string $requestTarget = null;
+
+    /**
      * @param string $method
      * @param UriInterface $uri
      * @param string $protocolVersion
@@ -230,7 +235,18 @@ class ServerRequest implements ServerRequestInterface
      */
     public function getRequestTarget()
     {
-        throw new MethodNotImplementedException('Method `getRequestTarget` not implemented');
+        if ($this->requestTarget) {
+            return $this->requestTarget;
+        }
+
+        $requestTarget = '/' . $this->uri->getPath();
+        $queryString = $this->uri->getQuery();
+
+        if ($queryString) {
+            $requestTarget .= "?{$queryString}";
+        }
+
+        return $requestTarget;
     }
 
     /**
@@ -238,7 +254,10 @@ class ServerRequest implements ServerRequestInterface
      */
     public function withRequestTarget($requestTarget)
     {
-        throw new MethodNotImplementedException('Method `withRequestTarget` not implemented');
+        $new = clone $this;
+        $new->requestTarget = $requestTarget;
+
+        return $new;
     }
 
     /**

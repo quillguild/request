@@ -23,6 +23,7 @@ abstract class AbstractMock
 
     public const COOKIE = [];
     public const QUERY = [];
+    public const FILES = [];
 
     protected ServerRequestInterface $request;
 
@@ -35,6 +36,7 @@ abstract class AbstractMock
                 'server' => static::SERVER,
                 'cookie' => static::COOKIE,
                 'query' => static::QUERY,
+                'files' => static::FILES,
             ],
         ]);
         $factory = $container->get(RequestFromGlobalsFactory::class);

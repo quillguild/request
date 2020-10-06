@@ -8,7 +8,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 use QuillStack\Http\HeaderBag\HeaderBag;
-use QuillStack\Http\Request\Exceptions\MethodNotImplementedException;
 use QuillStack\Http\Request\Factory\Exceptions\RequestMethodNotKnownException;
 use QuillStack\ParameterBag\ParameterBag;
 
@@ -442,7 +441,10 @@ class ServerRequest implements ServerRequestInterface
      */
     public function withAttribute($name, $value)
     {
-        throw new MethodNotImplementedException('Method `withAttribute` not implemented');
+        $new = clone $this;
+        $new->attributes[$name] = $value;
+
+        return $new;
     }
 
     /**
@@ -450,6 +452,12 @@ class ServerRequest implements ServerRequestInterface
      */
     public function withoutAttribute($name)
     {
-        throw new MethodNotImplementedException('Method `withoutAttribute` not implemented');
+        $new = clone $this;
+
+        if (isset($new->attributes[$name])) {
+            unset($new->attributes[$name]);
+        }
+
+        return $new;
     }
 }

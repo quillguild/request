@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use QuillStack\Http\Request\Factory\Exceptions\UnknownServerRequestClassException;
-use QuillStack\Http\Request\ServerRequest;
+use QuillStack\Http\Request\Request;
 use QuillStack\Http\Request\Validators\ServerParamValidator;
 
 class ServerRequestFactory implements ServerRequestFactoryInterface
@@ -16,7 +16,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
     /**
      * @var string
      */
-    private string $requestClass = ServerRequest::class;
+    private string $requestClass = Request::class;
 
     /**
      * @var StreamInterface

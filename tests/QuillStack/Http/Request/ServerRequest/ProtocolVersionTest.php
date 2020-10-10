@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace QuillStack\Http\Request\ServerRequest;
 
 use PHPUnit\Framework\TestCase;
-use QuillStack\Http\Request\ServerRequest;
+use QuillStack\Http\Request\Request;
 use QuillStack\Mocks\ServerRequest\MockProtocolVersion;
 
 final class ProtocolVersionTest extends TestCase
 {
-    private ServerRequest $request;
+    private Request $request;
 
     protected function setUp(): void
     {

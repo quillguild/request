@@ -9,7 +9,7 @@ use QuillStack\Mocks\ServerRequest\MockProtocolVersion;
 
 final class AttributesTest extends TestCase
 {
-    private ServerRequest $request;
+    private Request $request;
 
     protected function setUp(): void
     {

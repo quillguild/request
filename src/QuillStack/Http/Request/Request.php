@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace QuillStack\Http\Request;
 
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 use QuillStack\Http\HeaderBag\HeaderBag;
 use QuillStack\Http\Request\Factory\Exceptions\RequestMethodNotKnownException;
 use QuillStack\ParameterBag\ParameterBag;
 
-class ServerRequest implements ServerRequestInterface
+class Request implements RequestInterface
 {
     /**
      * @var string

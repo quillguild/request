@@ -6,12 +6,12 @@ namespace QuillStack\Http\Request\ServerRequest;
 
 use PHPUnit\Framework\TestCase;
 use QuillStack\Http\Request\Factory\Exceptions\RequestMethodNotKnownException;
-use QuillStack\Http\Request\ServerRequest;
+use QuillStack\Http\Request\Request;
 use QuillStack\Mocks\ServerRequest\MockProtocolVersion;
 
 final class MethodTest extends TestCase
 {
-    private ServerRequest $request;
+    private Request $request;
 
     protected function setUp(): void
     {

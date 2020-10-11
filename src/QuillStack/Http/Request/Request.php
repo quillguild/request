@@ -213,29 +213,35 @@ class Request implements RequestInterface
 
     /**
      * {@inheritDoc}
-     * @codeCoverageIgnore
      */
     public function withHeader($name, $value)
     {
-        return $this->headerBag->withHeader($name, $value);
+        $new = clone $this;
+        $new->headerBag = $this->headerBag->withHeader($name, $value);
+
+        return $new;
     }
 
     /**
      * {@inheritDoc}
-     * @codeCoverageIgnore
      */
     public function withAddedHeader($name, $value)
     {
-        return $this->headerBag->withAddedHeader($name, $value);
+        $new = clone $this;
+        $new->headerBag = $this->headerBag->withAddedHeader($name, $value);
+
+        return $new;
     }
 
     /**
      * {@inheritDoc}
-     * @codeCoverageIgnore
      */
     public function withoutHeader($name)
     {
-        return $this->headerBag->withoutHeader($name);
+        $new = clone $this;
+        $new->headerBag = $this->headerBag->withoutHeader($name);
+
+        return $new;
     }
 
     /**
